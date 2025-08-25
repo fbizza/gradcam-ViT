@@ -24,7 +24,7 @@ for code_folder in os.listdir(DATA_DIR):
 
 model_name = "facebook/deit-tiny-patch16-224"
 feature_extractor = ViTImageProcessor.from_pretrained(model_name)
-model = ViTForImageClassification.from_pretrained(model_name)
+model = ViTForImageClassification.from_pretrained(model_name, output_hidden_states=True)
 
 rows = []
 
@@ -37,6 +37,8 @@ for img_rel_path in tqdm(image_paths, desc="Processing images"):
         outputs = model(**inputs)
         predicted_idx = outputs.logits.argmax(-1).item()
         predicted_label = idx_to_label[str(predicted_idx)][1]
+        cls_vector = outputs.hidden_states[-1][:, 0, :].squeeze().tolist()
+        cls_vector_str = json.dumps(cls_vector)
 
     code = img_rel_path.split(os.sep)[0]
     true_idx = code_to_idx.get(code, -1)
@@ -48,7 +50,8 @@ for img_rel_path in tqdm(image_paths, desc="Processing images"):
         "true_label": true_label,
         "predicted_idx": predicted_idx,
         "predicted_label": predicted_label,
-        "correct_classification": int(true_idx == predicted_idx)
+        "correct_classification": int(true_idx == predicted_idx),
+        "cls_vector": cls_vector_str
     })
 
 pd.DataFrame(rows).to_csv(CSV_OUTPUT_FILE, index=False)
