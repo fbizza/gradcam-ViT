@@ -3,8 +3,10 @@ import json
 import pandas as pd
 from PIL import Image
 import torch
+import numpy as np
 from tqdm import tqdm
 from transformers import ViTImageProcessor, ViTForImageClassification
+from sklearn.manifold import TSNE
 
 DATA_DIR = "images"
 JSON_LABELS_FILE = "labels_dictionary.json"
@@ -27,6 +29,7 @@ feature_extractor = ViTImageProcessor.from_pretrained(model_name)
 model = ViTForImageClassification.from_pretrained(model_name, output_hidden_states=True)
 
 rows = []
+cls_vectors = []
 
 for img_rel_path in tqdm(image_paths, desc="Processing images"):
     img_path = os.path.join(DATA_DIR, img_rel_path)
@@ -38,6 +41,7 @@ for img_rel_path in tqdm(image_paths, desc="Processing images"):
         predicted_idx = outputs.logits.argmax(-1).item()
         predicted_label = idx_to_label[str(predicted_idx)][1]
         cls_vector = outputs.hidden_states[-1][:, 0, :].squeeze().tolist()
+        cls_vectors.append(cls_vector)
         cls_vector_str = json.dumps(cls_vector)
 
     code = img_rel_path.split(os.sep)[0]
@@ -54,5 +58,18 @@ for img_rel_path in tqdm(image_paths, desc="Processing images"):
         "cls_vector": cls_vector_str
     })
 
-pd.DataFrame(rows).to_csv(CSV_OUTPUT_FILE, index=False)
+df = pd.DataFrame(rows)
+
+
+tsne = TSNE(n_components=2, random_state=42)
+tsne_results = tsne.fit_transform(np.array(cls_vectors))
+df["tsne_1"] = tsne_results[:, 0]
+df["tsne_2"] = tsne_results[:, 1]
+
+
+cols = [col for col in df.columns if col != "cls_vector"] + ["cls_vector"] # so that cls_vector is the last column
+df = df[cols]
+
+df.to_csv(CSV_OUTPUT_FILE, index=False)
 print(f"Dataset saved to {CSV_OUTPUT_FILE}")
+
