@@ -11,8 +11,27 @@ df = pd.DataFrame({
 def create_layout():
     return html.Div([
         html.Div([
-            html.H2("ViT Grad-Cam Dashboard", className="m-0")
-        ], className="navbar-custom d-flex align-items-center justify-content-center"),
+            html.H2("ViT Grad-Cam Dashboard", className="navbar-title"),
+
+            html.Div([  # Buttons container
+                html.A(
+                    html.Button(
+                        html.Img(src="/assets/images/github_logo.png", style={"height": "24px"}),
+                        className="nav-button"
+                    ),
+                    href="https://github.com/fbizza/gradcam-ViT",
+                    target="_blank"
+                ),
+                html.A(
+                    html.Button(
+                        html.Img(src="/assets/images/uni_logo.svg", style={"height": "24px"}),
+                        className="nav-button"
+                    ),
+                    href="https://www.unifi.it",
+                    target="_blank"
+                )
+            ], className="nav-buttons")
+        ], className="navbar-custom"),
 
         html.Div(id="sidebar", children=[
             html.Div([
@@ -49,17 +68,25 @@ def create_layout():
                     html.Div([
                         dcc.Dropdown(
                             id="dropdown-1",
-                            options=[{"label": f"Opzione {i}", "value": str(i)} for i in range(1,4)],
+                            options=[{"label": f"Opzione {i}", "value": str(i)} for i in range(1, 4)],
                             value="1",
-                            clearable=False
+                            clearable=False,
+                            style={"flex": "1"}  # this line is new
                         ),
                         dcc.Dropdown(
                             id="dropdown-2",
-                            options=[{"label": c, "value": c} for c in ["A","B","C"]],
+                            options=[{"label": c, "value": c} for c in ["A", "B", "C"]],
                             value="A",
-                            clearable=False
+                            clearable=False,
+                            style={"flex": "1"}
                         )
-                    ], style={"display": "flex", "gap": "1em"})
+                    ], style={
+                        "display": "flex",
+                        "gap": "1em",
+                        "justifyContent": "center",
+                        "alignItems": "center"
+                    })
+
                 ], className="card p-3"),
 
                 html.Div([

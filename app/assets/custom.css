@@ -7,16 +7,47 @@ body {
 .navbar-custom {
     background: #353842;
     color: #269C8B;
-    padding: 1rem;
+    padding: 1rem 2rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-.navbar-custom h2 {
-    margin: 0;
+.navbar-title {
+    position: absolute;   /* centers title regardless of buttons */
+    left: 50%;
+    transform: translateX(-50%);
     font-weight: 600;
     font-size: 1.5rem;
     color: #269C8B;
+    margin: 0;
 }
+
+.nav-buttons {
+    margin-left: auto;    /* push buttons to the right */
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+.nav-button {
+    background-color: #269C8B;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.3em 0.6em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #1f7f6e;
+    transform: scale(1.1);
+}
+
 
 .card {
     background-color: #353842;
@@ -54,11 +85,17 @@ body {
 }
 
 /* Dropdown and slider */
-.dash-dropdown, .Select-control, .Select-menu-outer {
+.dash-dropdown, .Select-menu-outer {
     background-color: #353842 !important;
     color: #269C8B !important;
     border: 1px solid #269C8B !important;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
+}
+
+.Select-control {
+    color: #269C8B !important;
+    border: 1px solid #269C8B !important;
+    border-radius: 1rem;
 }
 
 .Select-value-label {
