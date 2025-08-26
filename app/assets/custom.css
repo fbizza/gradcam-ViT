@@ -1,0 +1,40 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.navbar-custom {
+    background: linear-gradient(90deg, #0d6efd, #6610f2);
+    color: white;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar-custom h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+#sidebar {
+    background: white;
+    border-right: 1px solid #dee2e6;
+}
+
+#close-sidebar {
+    font-weight: bold;
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+}
+
+#close-sidebar:hover {
+    transform: scale(1.2);
+    color: #dc3545;
+    background: transparent;
+}
