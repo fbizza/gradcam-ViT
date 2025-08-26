@@ -2,11 +2,7 @@ from dash import html, dcc
 import plotly.express as px
 import pandas as pd
 
-df = pd.DataFrame({
-    "x": [1,2,3,4,5,6,7,8,9,10],
-    "y": [10,9,8,7,6,5,4,3,2,1],
-    "info": ["A","B","C","D","E","F","G","H","I","J"]
-})
+df = pd.read_csv("data/dataset.csv")
 
 def create_layout():
     return html.Div([
@@ -105,8 +101,32 @@ def create_layout():
                     html.H5("Scatter Plot", className="card-title"),
                     dcc.Graph(
                         id='scatter-plot',
-                        figure=px.scatter(df, x="x", y="y", text="info",
-                                          template="plotly_white")
+                        figure=px.scatter(
+                            df,
+                            x="tsne_1",
+                            y="tsne_2",
+                            color="predicted_label",
+                        ).update_layout(
+                            plot_bgcolor="rgba(0,0,0,0)",
+                            paper_bgcolor="rgba(0,0,0,0)",
+                            xaxis=dict(visible=False),
+                            yaxis=dict(visible=False),
+
+                            # Stile legenda
+                            legend=dict(
+                                font=dict(
+                                    size=12,
+                                    color="#269C8B"
+                                ),
+                                bgcolor="#282B33",
+                                bordercolor="#269C8B",
+                                borderwidth=2
+                            )
+                        ),
+                        config={
+                            "scrollZoom": True,
+                            "displayModeBar": False
+                        }
                     )
                 ], className="card p-3")
 
