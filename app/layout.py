@@ -10,36 +10,35 @@ df = pd.DataFrame({
 
 def create_layout():
     return html.Div([
-        # Navbar
         html.Div([
-            html.H2("ViT Grad-Cam Dashboard", className="text-center text-white")
-        ], className="navbar-custom"),
+            html.H2("ViT Grad-Cam Dashboard", className="m-0")
+        ], className="navbar-custom d-flex align-items-center justify-content-center"),
 
-        # Sidebar
         html.Div(id="sidebar", children=[
             html.Div([
                 html.Button("×", id="close-sidebar",
                             style={
                                 "background": "transparent",
                                 "border": "none",
-                                "cursor": "pointer"
+                                "cursor": "pointer",
+                                "color": "#269C8B"
                             })
             ], style={"display": "flex", "justify-content": "flex-end"}),
 
             html.Div(id="sidebar-content", children=[
-                html.H4("Dettagli Punto", style={"color": "black"}),
+                html.H4("Dettagli Punto", style={"color": "#269C8B"}),
                 html.P("Seleziona un punto sul grafico per vedere le informazioni qui.",
-                       style={"color": "black"})
+                       style={"color": "#269C8B"})
             ], style={"padding": "1em"})
         ], style={
             "position": "fixed",
             "top": 0,
             "left": 0,
             "height": "100%",
-            "width": "0%",
+            "width": "0%",  # inizialmente chiusa
             "overflow": "hidden",
             "padding": "0",
-            "background-color": "#fff",
+            "background-color": "#353842",
             "transition": "width 0.3s ease",
             "z-index": 1000,
             "box-shadow": "2px 0 0.5em rgba(0,0,0,0.1)"
@@ -47,8 +46,6 @@ def create_layout():
 
         html.Div(id="main-content", children=[
             html.Div([
-
-                # Dropdown
                 html.Div([
                     html.H5("Selezioni", className="card-title"),
                     html.Div([
@@ -67,7 +64,6 @@ def create_layout():
                     ], style={"display": "flex", "gap": "1em"})
                 ], className="card p-3"),
 
-                # Slider
                 html.Div([
                     html.H5("Seleziona valore", className="card-title"),
                     dcc.Slider(
@@ -80,7 +76,6 @@ def create_layout():
                     )
                 ], className="card p-3"),
 
-                # Scatter plot
                 html.Div([
                     html.H5("Scatter Plot", className="card-title"),
                     dcc.Graph(

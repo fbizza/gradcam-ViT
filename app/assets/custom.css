@@ -1,11 +1,12 @@
 body {
-    background-color: #f8f9fa;
+    background-color: #282B33;
     font-family: 'Segoe UI', Roboto, sans-serif;
+    color: #269C8B;
 }
 
 .navbar-custom {
-    background: linear-gradient(90deg, #0d6efd, #6610f2);
-    color: white;
+    background: #353842;
+    color: #269C8B;
     padding: 1rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
@@ -14,27 +15,66 @@ body {
     margin: 0;
     font-weight: 600;
     font-size: 1.5rem;
+    color: #269C8B;
 }
 
 .card {
+    background-color: #353842;
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
     margin-bottom: 2rem;
+    color: #269C8B;
 }
 
+/* Sidebar */
 #sidebar {
-    background: white;
-    border-right: 1px solid #dee2e6;
+    background: #353842;
+    color: #269C8B;
+    border-right: none; /* rimuove il bordo quando è chiusa */
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+#sidebar h4,
+#sidebar p {
+    color: #269C8B;
 }
 
 #close-sidebar {
     font-weight: bold;
     font-size: 1.5rem;
     transition: transform 0.2s;
+    color: #269C8B;
+    background: transparent;
 }
 
 #close-sidebar:hover {
     transform: scale(1.2);
     color: #dc3545;
     background: transparent;
+}
+
+/* Dropdown e slider */
+.dash-dropdown, .Select-control, .Select-menu-outer {
+    background-color: #353842 !important;
+    color: #269C8B !important;
+    border: 1px solid #269C8B !important;
+    border-radius: 0.5rem;
+}
+
+.Select-value-label {
+    color: #269C8B !important;
+}
+
+#my-slider .rc-slider-track {
+    background-color: #269C8B;
+}
+
+#my-slider .rc-slider-handle {
+    border: solid 2px #269C8B;
+    background-color: #353842;
+}
+
+/* Scatter plot background */
+#scatter-plot {
+    background-color: #353842;
 }
