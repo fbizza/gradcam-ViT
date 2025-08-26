@@ -34,11 +34,11 @@ class GradCam:
         self.model.zero_grad()
         output = self.model(inputs)
 
-        index = np.argmax(output.cpu().data.numpy())
+        index = np.argmax(output.data.numpy())
         target = output[0][index]
         target.backward()
 
-        gradient = self.gradient[0].cpu().data.numpy()
+        gradient = self.gradient[0].data.numpy()
         weight = np.mean(gradient, axis=(1, 2))
         feature = self.feature[0].cpu().data.numpy()
 
