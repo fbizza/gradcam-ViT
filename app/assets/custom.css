@@ -30,7 +30,7 @@ body {
 #sidebar {
     background: #353842;
     color: #269C8B;
-    border-right: none; /* rimuove il bordo quando è chiusa */
+    border-right: none;
     transition: width 0.3s ease, background-color 0.3s ease;
 }
 
@@ -53,7 +53,7 @@ body {
     background: transparent;
 }
 
-/* Dropdown e slider */
+/* Dropdown and slider */
 .dash-dropdown, .Select-control, .Select-menu-outer {
     background-color: #353842 !important;
     color: #269C8B !important;
@@ -71,10 +71,5 @@ body {
 
 #my-slider .rc-slider-handle {
     border: solid 2px #269C8B;
-    background-color: #353842;
-}
-
-/* Scatter plot background */
-#scatter-plot {
     background-color: #353842;
 }

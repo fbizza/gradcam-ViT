@@ -30,8 +30,8 @@ def toggle_sidebar(clickData, close_clicks, sidebar_style, main_style):
         sidebar_style["padding"] = "2%"
         main_style["margin-left"] = "25%"
         content = html.Div([
-            html.H4("Dettagli Punto", style={"color": "#269C8B"}),
-            html.P(f"Punto selezionato: ({x}, {y})", style={"color": "#269C8B"}),
+            html.H4("Dettagli Punto"),
+            html.P(f"Punto selezionato: ({x}, {y})"),
             html.P(f"Info: {info}", style={"color": "#269C8B"})
         ], style={"display": "flex", "flex-direction": "column", "gap": "1em", "margin-top": "1em"})
         return sidebar_style, main_style, content, clickData

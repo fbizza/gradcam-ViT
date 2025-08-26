@@ -21,7 +21,6 @@ def create_layout():
                                 "background": "transparent",
                                 "border": "none",
                                 "cursor": "pointer",
-                                "color": "#269C8B"
                             })
             ], style={"display": "flex", "justify-content": "flex-end"}),
 
@@ -38,7 +37,6 @@ def create_layout():
             "width": "0%",  # inizialmente chiusa
             "overflow": "hidden",
             "padding": "0",
-            "background-color": "#353842",
             "transition": "width 0.3s ease",
             "z-index": 1000,
             "box-shadow": "2px 0 0.5em rgba(0,0,0,0.1)"
