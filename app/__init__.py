@@ -1,0 +1,10 @@
+from dash import Dash
+
+external_stylesheets = ["https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"]
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+from app import layout, callbacks
+
+app.layout = layout.create_layout()
