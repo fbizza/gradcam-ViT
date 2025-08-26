@@ -49,7 +49,7 @@ def create_layout():
             "top": 0,
             "left": 0,
             "height": "100%",
-            "width": "0%",  # inizialmente chiusa
+            "width": "0%",
             "overflow": "hidden",
             "padding": "0",
             "transition": "width 0.3s ease",
@@ -67,7 +67,7 @@ def create_layout():
                             options=[{"label": f"Opzione {i}", "value": str(i)} for i in range(1, 4)],
                             value="1",
                             clearable=False,
-                            style={"flex": "1"}  # this line is new
+                            style={"flex": "1"}
                         ),
                         dcc.Dropdown(
                             id="dropdown-2",
@@ -112,10 +112,18 @@ def create_layout():
                             xaxis=dict(visible=False),
                             yaxis=dict(visible=False),
 
-                            # Stile legenda
                             legend=dict(
+                                title=dict(
+                                    text="Predicted Label",
+                                    font=dict(
+                                        size=14,  # title of the legend
+                                        color="#269C8B",
+                                        weight=1000,
+                                        #family="Arial",
+                                    )
+                                ),
                                 font=dict(
-                                    size=12,
+                                    size=12,  # font of the entries in the legend
                                     color="#269C8B"
                                 ),
                                 bgcolor="#282B33",
