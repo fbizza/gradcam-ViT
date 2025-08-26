@@ -9,7 +9,7 @@ def create_layout():
         html.Div([
             html.H2("ViT Grad-Cam Dashboard", className="navbar-title"),
 
-            html.Div([  # Buttons container
+            html.Div([
                 html.A(
                     html.Button(
                         html.Img(src="/assets/images/github_logo.png", style={"height": "24px"}),
@@ -98,7 +98,20 @@ def create_layout():
                 ], className="card p-3"),
 
                 html.Div([
-                    html.H5("Scatter Plot", className="card-title"),
+                    html.H5(
+                        "Scatter Plot",
+                        className="card-title",
+                        style={
+                            "position": "absolute",
+                            "inset": "0 auto auto 0",
+                            "margin": "0",
+                            "padding": "0.5em 1em",
+                            "zIndex": "10",
+                            "color": "#269C8B",
+                            "background": "rgba(40,43,51,0.6)",
+                            "borderBottomRightRadius": "0.75em"
+                        }
+                    ),
                     dcc.Graph(
                         id='scatter-plot',
                         figure=px.scatter(
@@ -107,36 +120,35 @@ def create_layout():
                             y="tsne_2",
                             color="predicted_label",
                         ).update_layout(
+                            dragmode='pan',
                             plot_bgcolor="rgba(0,0,0,0)",
                             paper_bgcolor="rgba(0,0,0,0)",
                             xaxis=dict(visible=False),
                             yaxis=dict(visible=False),
+                            margin=dict(l=0, r=0, t=0, b=0),
 
                             legend=dict(
                                 title=dict(
                                     text="Predicted Label",
-                                    font=dict(
-                                        size=14,  # title of the legend
-                                        color="#269C8B",
-                                        weight=1000,
-                                        #family="Arial",
-                                    )
+                                    font=dict(size=14, color="#269C8B")
                                 ),
-                                font=dict(
-                                    size=12,  # font of the entries in the legend
-                                    color="#269C8B"
-                                ),
-                                bgcolor="#282B33",
-                                bordercolor="#269C8B",
-                                borderwidth=2
+                                font=dict(size=12, color="#269C8B"),
+                                #bgcolor="#282B33",
+                                #bordercolor="#269C8B",
+                                #borderwidth=2
                             )
                         ),
                         config={
                             "scrollZoom": True,
                             "displayModeBar": False
-                        }
+                        },
+                        style={"width": "100%", "height": "100%"}
                     )
-                ], className="card p-3")
+                ], className="card p-0",
+                    style={
+                        "position": "relative",
+                        "overflow": "hidden"
+                    })
 
             ], className="container mt-4")
         ], style={"margin-left": "0%", "transition": "margin-left 0.3s",
