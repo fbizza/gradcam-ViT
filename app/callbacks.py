@@ -22,7 +22,6 @@ def update_scatter(*args):
         return dash.no_update
 
     pred_filter = args[-1]
-    button_clicks = args[:-1]
 
     button_id = ctx.triggered[0]["prop_id"].split(".")[0]
     if button_id.startswith("btn-"):
