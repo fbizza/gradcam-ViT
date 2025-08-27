@@ -123,8 +123,20 @@ def create_layout():
                             dragmode='pan',
                             plot_bgcolor="rgba(0,0,0,0)",
                             paper_bgcolor="rgba(0,0,0,0)",
-                            xaxis=dict(visible=False),
-                            yaxis=dict(visible=False),
+                            xaxis=dict(
+                                visible=False,
+                                range=[
+                                    df["tsne_1"].min() - (df["tsne_1"].max() - df["tsne_1"].min()) * 0.1,
+                                    df["tsne_1"].max() + (df["tsne_1"].max() - df["tsne_1"].min()) * 0.25
+                                ]
+                            ),
+                            yaxis=dict(
+                                visible=False,
+                                range=[
+                                    df["tsne_2"].min() - (df["tsne_2"].max() - df["tsne_2"].min()) * 0.1,
+                                    df["tsne_2"].max() + (df["tsne_2"].max() - df["tsne_2"].min()) * 0.1
+                                ]
+                            ),
                             margin=dict(l=0, r=0, t=0, b=0),
 
                             legend=dict(
@@ -133,10 +145,14 @@ def create_layout():
                                     font=dict(size=14, color="#269C8B")
                                 ),
                                 font=dict(size=12, color="#269C8B"),
-                                #bgcolor="#282B33",
-                                #bordercolor="#269C8B",
-                                #borderwidth=2
+                                bgcolor="#2F323B",
+                                borderwidth=0,
+                                x=0.993,
+                                y=1,
+                                xanchor="right",
+                                yanchor="top"
                             )
+
                         ),
                         config={
                             "scrollZoom": True,
