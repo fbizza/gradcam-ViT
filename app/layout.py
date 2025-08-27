@@ -16,7 +16,8 @@ def create_scatter_figure(df, num_points=None):
         x="tsne_1",
         y="tsne_2",
         color="predicted_label",
-        category_orders={"predicted_label": sorted_labels}
+        category_orders={"predicted_label": sorted_labels},
+        render_mode="webgl"
     )
 
     fig.update_layout(
@@ -151,22 +152,34 @@ def create_layout():
                         "margin-bottom": "1em"
                     }),
 
-                    # Slider
+                    # Number of points to show
                     html.Div([
-                        html.Label("Number of points", style={"textAlign": "center", "margin-bottom": "0.5em"}),
-                        dcc.Slider(
-                            id='my-slider',
-                            min=0,
-                            max=len(df),
-                            value=2000,
-                            tooltip={"placement": "bottom", "always_visible": False},
-                            updatemode="drag"
-                        )
-                    ], style={"display": "flex", "flexDirection": "column", "width": "100%", "margin-top": "1em"})
+                        html.Label(
+                            "Number of points",
+                            style={
+                                "textAlign": "center",
+                                "margin-bottom": "0.5em",
+                                "width": "100%",
+                                "fontWeight": "bold"
+                            }
+                        ),
+
+                        html.Div([
+                            html.Button("1000", id="btn-1000", n_clicks=0, className="point-button"),
+                            html.Button("2000", id="btn-2000", n_clicks=0, className="point-button"),
+                            html.Button("3000", id="btn-3000", n_clicks=0, className="point-button"),
+                            html.Button("4000", id="btn-4000", n_clicks=0, className="point-button"),
+                            html.Button("5000", id="btn-5000", n_clicks=0, className="point-button selected"),
+                        ], style={
+                            "display": "flex",
+                            "gap": "1em",
+                            "justify-content": "center"
+                        })
+                    ], style={"display": "flex", "flexDirection": "column", "alignItems": "center"})
                 ], className="card p-3"),
 
 
-
+                # Scatter plot
                 html.Div([
                     html.H5(
                         "Scatter Plot",

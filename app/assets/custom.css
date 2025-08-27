@@ -116,3 +116,23 @@ body {
     cursor: crosshair;
 }
 
+.point-button {
+    background-color: #269C8B;  /* come i nav-button */
+    color: #353842;              /* testo scuro per contrasto */
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.point-button:hover {
+    background-color: #1f7f6e;
+    transform: scale(1.1);
+}
+
+.point-button.selected {
+    background-color: #1f7f6e; /* bottone selezionato */
+    color: #FFFFFF;
+}
