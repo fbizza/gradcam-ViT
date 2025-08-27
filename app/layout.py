@@ -2,19 +2,24 @@ from dash import html, dcc
 import plotly.express as px
 from app import df
 
-def create_scatter_figure(df, num_points=None):
+def create_scatter_figure(df, num_points=None, dim_reduction="tsne"):
 
     if num_points:
         df_plot = df.sample(n=num_points, random_state=29)
     else:
         df_plot = df
 
+    if dim_reduction == "umap":
+        x_col, y_col = "umap_1", "umap_2"
+    else:
+        x_col, y_col = "tsne_1", "tsne_2"
+
     sorted_labels = sorted(df_plot['predicted_label'].unique())
 
     fig = px.scatter(
         df_plot,
-        x="tsne_1",
-        y="tsne_2",
+        x=x_col,
+        y=y_col,
         color="predicted_label",
         category_orders={"predicted_label": sorted_labels},
         render_mode="webgl"
@@ -27,15 +32,15 @@ def create_scatter_figure(df, num_points=None):
         xaxis=dict(
             visible=False,
             range=[
-                df["tsne_1"].min() - (df["tsne_1"].max() - df["tsne_1"].min()) * 0.1,
-                df["tsne_1"].max() + (df["tsne_1"].max() - df["tsne_1"].min()) * 0.25
+                df[x_col].min() - (df[x_col].max() - df[x_col].min()) * 0.1,
+                df[x_col].max() + (df[x_col].max() - df[x_col].min()) * 0.25
             ]
         ),
         yaxis=dict(
             visible=False,
             range=[
-                df["tsne_2"].min() - (df["tsne_2"].max() - df["tsne_2"].min()) * 0.1,
-                df["tsne_2"].max() + (df["tsne_2"].max() - df["tsne_2"].min()) * 0.1
+                df[y_col].min() - (df[y_col].max() - df[y_col].min()) * 0.1,
+                df[y_col].max() + (df[y_col].max() - df[y_col].min()) * 0.1
             ]
         ),
         margin=dict(l=0, r=0, t=0, b=0),
@@ -55,6 +60,7 @@ def create_scatter_figure(df, num_points=None):
     )
 
     return fig
+
 
 
 def create_layout():
@@ -132,13 +138,19 @@ def create_layout():
                             )
                         ], style={"display": "flex", "flexDirection": "column", "flex": "1", "fontWeight": "bold"}),
 
-                        # Dropdown 2
+                        # Dropdown 2 (dim reduction)
                         html.Div([
-                            html.Label("Dropdown 2", style={"textAlign": "center", "margin-bottom": "0.5em", "fontWeight": "bold"}),
+                            html.Label(
+                                "Dimensionality Reduction",
+                                style={"textAlign": "center", "margin-bottom": "0.5em", "fontWeight": "bold"}
+                            ),
                             dcc.Dropdown(
-                                id="dropdown-2",
-                                options=[{"label": c, "value": c} for c in ["A", "B", "C"]],
-                                value="A",
+                                id="dropdown-dim-reduction",
+                                options=[
+                                    {"label": "t-SNE", "value": "tsne"},
+                                    {"label": "umap", "value": "umap"}
+                                ],
+                                value="tsne",
                                 clearable=False,
                                 style={"width": "100%"}
                             )

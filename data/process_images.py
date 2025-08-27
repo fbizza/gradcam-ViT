@@ -6,6 +6,7 @@ import torch
 import numpy as np
 from tqdm import tqdm
 from sklearn.manifold import TSNE
+import umap
 import timm
 from torchvision import transforms
 
@@ -68,10 +69,15 @@ for img_rel_path in tqdm(image_paths, desc="Processing images"):
 
 df = pd.DataFrame(rows)
 
-tsne = TSNE(n_components=2, random_state=42)
+tsne = TSNE(n_components=2, random_state=29)
 tsne_results = tsne.fit_transform(np.array(cls_vectors))
 df["tsne_1"] = tsne_results[:, 0]
 df["tsne_2"] = tsne_results[:, 1]
+
+reducer = umap.UMAP(n_components=2, random_state=29)
+umap_results = reducer.fit_transform(cls_vectors)
+df["umap_1"] = umap_results[:, 0]
+df["umap_2"] = umap_results[:, 1]
 
 # cls_vector in the last column
 cols = [col for col in df.columns if col != "cls_vector"] + ["cls_vector"]

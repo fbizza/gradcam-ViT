@@ -12,8 +12,8 @@ from models import generate_gradcam_images
     [Output(f"btn-{n}", "className") for n in [1000, 2000, 3000, 4000, 5000]],
 
     [Input(f"btn-{n}", "n_clicks") for n in [1000, 2000, 3000, 4000, 5000]] +
-    [Input("dropdown-predictions", "value")],
-
+    [Input("dropdown-predictions", "value"),
+     Input("dropdown-dim-reduction", "value")],
     prevent_initial_call=True
 )
 def update_scatter(*args):
@@ -21,7 +21,8 @@ def update_scatter(*args):
     if not ctx.triggered:
         return dash.no_update
 
-    pred_filter = args[-1]
+    pred_filter = args[-2]
+    dim_reduction = args[-1] or "tsne"
 
     button_id = ctx.triggered[0]["prop_id"].split(".")[0]
     if button_id.startswith("btn-"):
@@ -32,14 +33,14 @@ def update_scatter(*args):
 
     filtered_df = df.copy()
     if pred_filter == "correct":
-        filtered_df = filtered_df[filtered_df["correct_classification"] == True]
+        filtered_df = filtered_df[filtered_df["correct_classification"] == 1]
     elif pred_filter == "wrong":
-        filtered_df = filtered_df[filtered_df["correct_classification"] == False]
+        filtered_df = filtered_df[filtered_df["correct_classification"] == 0]
 
     if num_points > len(filtered_df):
         num_points = len(filtered_df)
 
-    fig = create_scatter_figure(filtered_df, num_points=num_points)
+    fig = create_scatter_figure(filtered_df, num_points=num_points, dim_reduction=dim_reduction)
 
     classes = []
     for n in [1000, 2000, 3000, 4000, 5000]:
@@ -57,13 +58,22 @@ def update_scatter(*args):
     Output("scatter-plot", "clickData"),
     Input("scatter-plot", "clickData"),
     Input("close-sidebar", "n_clicks"),
+    Input("dropdown-dim-reduction", "value"),  # DR method
     State("sidebar", "style"),
     State("main-content", "style")
 )
-def toggle_sidebar(clickData, close_clicks, sidebar_style, main_style):
+def toggle_sidebar(clickData, close_clicks, dim_reduction, sidebar_style, main_style):
     ctx = dash.callback_context
+    triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-    if ctx.triggered and ctx.triggered[0]["prop_id"].split(".")[0] == "close-sidebar":
+    if triggered_id == "close-sidebar":
+        sidebar_style["width"] = "0%"
+        sidebar_style["padding"] = "0"
+        main_style["margin-left"] = "0%"
+        return sidebar_style, main_style, "", None
+
+    # If dim reduction method changed, reset sidebar
+    if triggered_id == "dropdown-dim-reduction":
         sidebar_style["width"] = "0%"
         sidebar_style["padding"] = "0"
         main_style["margin-left"] = "0%"
@@ -74,7 +84,15 @@ def toggle_sidebar(clickData, close_clicks, sidebar_style, main_style):
         x = point["x"]
         y = point["y"]
 
-        row = df[(df["tsne_1"] == x) & (df["tsne_2"] == y)].iloc[0]
+        if dim_reduction == "umap":
+            x_col, y_col = "umap_1", "umap_2"
+        else:
+            x_col, y_col = "tsne_1", "tsne_2"
+
+        matches = df[(df[x_col] == x) & (df[y_col] == y)]
+        if matches.empty:
+            return sidebar_style, main_style, dash.no_update, None
+        row = matches.iloc[0]
 
         correctness = "Correct" if row["correct_classification"] else "Wrong"
         true_label = row["true_label"]
@@ -105,4 +123,5 @@ def toggle_sidebar(clickData, close_clicks, sidebar_style, main_style):
         return sidebar_style, main_style, content, clickData
 
     return sidebar_style, main_style, dash.no_update, dash.no_update
+
 
