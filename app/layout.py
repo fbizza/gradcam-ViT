@@ -60,42 +60,55 @@ def create_layout():
         html.Div(id="main-content", children=[
             html.Div([
                 html.Div([
-                    html.H5("Selezioni", className="card-title"),
+                    #html.H5("Selections", className="card-title"),
+
                     html.Div([
-                        dcc.Dropdown(
-                            id="dropdown-1",
-                            options=[{"label": f"Opzione {i}", "value": str(i)} for i in range(1, 4)],
-                            value="1",
-                            clearable=False,
-                            style={"flex": "1"}
-                        ),
-                        dcc.Dropdown(
-                            id="dropdown-2",
-                            options=[{"label": c, "value": c} for c in ["A", "B", "C"]],
-                            value="A",
-                            clearable=False,
-                            style={"flex": "1"}
-                        )
+                        # Dropdown 1
+                        html.Div([
+                            html.Label("Dropdown 1", style={"textAlign": "center", "margin-bottom": "0.5em"}),
+                            dcc.Dropdown(
+                                id="dropdown-1",
+                                options=[{"label": f"Opzione {i}", "value": str(i)} for i in range(1, 4)],
+                                value="1",
+                                clearable=False,
+                                style={"width": "100%"}
+                            )
+                        ], style={"display": "flex", "flexDirection": "column", "flex": "1"}),
+
+                        # Dropdown 2
+                        html.Div([
+                            html.Label("Dropdown 2", style={"textAlign": "center", "margin-bottom": "0.5em"}),
+                            dcc.Dropdown(
+                                id="dropdown-2",
+                                options=[{"label": c, "value": c} for c in ["A", "B", "C"]],
+                                value="A",
+                                clearable=False,
+                                style={"width": "100%"}
+                            )
+                        ], style={"display": "flex", "flexDirection": "column", "flex": "1"})
+
                     ], style={
                         "display": "flex",
                         "gap": "1em",
                         "justifyContent": "center",
-                        "alignItems": "center"
-                    })
+                        "alignItems": "center",
+                        "margin-bottom": "1em"
+                    }),
 
+                    # Slider
+                    html.Div([
+                        html.Label("Number of points", style={"textAlign": "center", "margin-bottom": "0.5em"}),
+                        dcc.Slider(
+                            id='my-slider',
+                            min=0,
+                            max=5000,
+                            tooltip={"placement": "bottom", "always_visible": False},
+                            updatemode="drag"
+                        )
+                    ], style={"display": "flex", "flexDirection": "column", "width": "100%", "margin-top": "1em"})
                 ], className="card p-3"),
 
-                html.Div([
-                    html.H5("Seleziona valore", className="card-title"),
-                    dcc.Slider(
-                        id='my-slider',
-                        min=0,
-                        max=10,
-                        step=1,
-                        value=5,
-                        tooltip={"placement": "bottom", "always_visible": True}
-                    )
-                ], className="card p-3"),
+
 
                 html.Div([
                     html.H5(
