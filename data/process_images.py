@@ -3,6 +3,7 @@ import json
 import pandas as pd
 from PIL import Image
 import torch
+import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm
 from sklearn.manifold import TSNE
@@ -50,6 +51,11 @@ for img_rel_path in tqdm(image_paths, desc="Processing images"):
         cls_vector_str = json.dumps(cls_vector)
 
         logits = timm_model.forward_head(timm_outputs)
+        probs = F.softmax(logits, dim=-1).squeeze()
+
+        top3_probs, top3_idx = torch.topk(probs, 3)
+        softmax_dict = {idx_to_label[str(idx)][1]: float(prob) for idx, prob in zip(top3_idx.tolist(), top3_probs.tolist())}
+
         predicted_idx = logits.argmax(-1).item()
         predicted_label = idx_to_label[str(predicted_idx)][1]
 
@@ -64,7 +70,8 @@ for img_rel_path in tqdm(image_paths, desc="Processing images"):
         "predicted_idx": predicted_idx,
         "predicted_label": predicted_label,
         "correct_classification": int(true_idx == predicted_idx),
-        "cls_vector": cls_vector_str
+        "cls_vector": cls_vector_str,
+        "softmax": json.dumps(softmax_dict)
     })
 
 df = pd.DataFrame(rows)
@@ -79,7 +86,6 @@ umap_results = reducer.fit_transform(cls_vectors)
 df["umap_1"] = umap_results[:, 0]
 df["umap_2"] = umap_results[:, 1]
 
-# cls_vector in the last column
 cols = [col for col in df.columns if col != "cls_vector"] + ["cls_vector"]
 df = df[cols]
 

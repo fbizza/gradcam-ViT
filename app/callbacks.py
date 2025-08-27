@@ -1,7 +1,10 @@
-from dash import Input, Output, State, html
-from app import app, df
 import dash
+import json
+from dash import Input, Output, State, html, dcc
+import plotly.graph_objects as go
 import base64
+from app import app, df
+
 
 from app.layout import create_scatter_figure
 from models import generate_gradcam_images
@@ -54,11 +57,6 @@ def update_scatter(*args):
 
 
 
-from dash import Input, Output, State, html, dcc
-import plotly.graph_objects as go
-import base64
-from app import app, df
-from models import generate_gradcam_images
 
 @app.callback(
     Output("sidebar", "style"),
@@ -118,20 +116,53 @@ def toggle_sidebar(clickData, close_clicks, dim_reduction, sidebar_style, main_s
         encoded_gradcam_image = base64.b64encode(open(gradcam_image, 'rb').read())
         encoded_original_image = base64.b64encode(open(original_image, 'rb').read())
 
-        # Create toy softmax bar chart (replace with real values if available)
-        softmax_values = [0.7, 0.2, 0.1]  # toy values
-        labels = ["Class A", "Class B", "Class C"]
+        softmax_dict = json.loads(row["softmax"])
+        labels = list(softmax_dict.keys())
+        softmax_values = list(softmax_dict.values())
+
+        # Colori: tutte rosse tranne la predetta corretta
+        predicted_label = row["predicted_label"]
+        correct_classification = row["correct_classification"]
+
+        colors = []
+        for label in labels:
+            if label == predicted_label and correct_classification:
+                colors.append("#269C8B")  # predetta corretta → blu
+            else:
+                colors.append("#dc3545")  # tutte le altre → rosse
+
         fig = go.Figure(go.Bar(
             x=labels,
             y=softmax_values,
-            marker_color=["#269C8B", "#1f7f6e", "#dc3545"]
+            marker_color=colors,
+            marker_line_width=0,  # niente bordi
+            text=[f"{v:.2f}" for v in softmax_values],
+            textposition='auto',
+            textfont=dict(color='white', size=12)
         ))
+
         fig.update_layout(
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(l=0, r=0, t=0, b=0),
-            yaxis=dict(range=[0, 1])
+            xaxis=dict(
+                showgrid=False,
+                showline=False,
+                zeroline=False,
+                tickfont=dict(color='white', size=12),
+                tickangle=-45,
+                automargin=True
+            ),
+            yaxis=dict(
+                showgrid=False,
+                showline=False,
+                zeroline=False,
+                tickfont=dict(color='white', size=12)
+            ),
+            margin=dict(l=20, r=20, t=10, b=40),
+            height=180,
+            autosize=True
         )
+
 
         # Sidebar content
         content = html.Div([
@@ -157,7 +188,10 @@ def toggle_sidebar(clickData, close_clicks, dim_reduction, sidebar_style, main_s
             ], style={"display": "flex", "justifyContent": "space-between", "gap": "2%", "marginBottom": "1em"}),
 
             html.H5("Top 3 Softmax", style={"color": "#269C8B", "marginBottom": "0.5em"}),
-            dcc.Graph(figure=fig, style={"height": "200px"})
+            dcc.Graph(
+                figure=fig,
+                style={"height": "100%", "width": "100%"}
+            )
         ], style={"display": "flex", "flexDirection": "column", "gap": "0.8em", "marginTop": "0.5em"})
 
         # Open sidebar
