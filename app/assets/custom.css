@@ -110,3 +110,9 @@ body {
     border: solid 2px #269C8B;
     background-color: #353842;
 }
+
+
+#scatter-plot > div.js-plotly-plot > div > div > svg:nth-child(1) > g.draglayer{
+    cursor: crosshair;
+}
+
