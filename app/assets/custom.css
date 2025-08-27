@@ -15,7 +15,7 @@ body {
 }
 
 .navbar-title {
-    position: absolute;   /* centers title regardless of buttons */
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
     font-weight: 600;
@@ -25,7 +25,7 @@ body {
 }
 
 .nav-buttons {
-    margin-left: auto;    /* push buttons to the right */
+    margin-left: auto;
     display: flex;
     gap: 1em;
     align-items: center;
@@ -57,7 +57,6 @@ body {
     color: #269C8B;
 }
 
-/* Sidebar */
 #sidebar {
     background: #353842;
     color: #269C8B;
@@ -84,7 +83,6 @@ body {
     background: transparent;
 }
 
-/* Dropdown and slider */
 .dash-dropdown, .Select-menu-outer {
     background-color: #353842 !important;
     color: #269C8B !important;
@@ -117,8 +115,8 @@ body {
 }
 
 .point-button {
-    background-color: #269C8B;  /* come i nav-button */
-    color: #353842;              /* testo scuro per contrasto */
+    background-color: #269C8B;
+    color: #353842;
     border: none;
     border-radius: 0.5rem;
     padding: 0.5em 1em;
@@ -133,6 +131,6 @@ body {
 }
 
 .point-button.selected {
-    background-color: #1f7f6e; /* bottone selezionato */
+    background-color: #1f7f6e;
     color: #FFFFFF;
 }
