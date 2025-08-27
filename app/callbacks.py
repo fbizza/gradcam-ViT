@@ -1,6 +1,17 @@
 from dash import Input, Output, State, html
-from app import app
+from app import app, df
 import dash
+from app.layout import create_scatter_figure  # assuming you put the function in layout.py
+
+
+@app.callback(
+    Output("scatter-plot", "figure"),
+    Input("my-slider", "value")
+)
+def update_scatter(num_points):
+    if not num_points:
+        num_points = 100
+    return create_scatter_figure(df, num_points=num_points)
 
 @app.callback(
     Output("sidebar", "style"),

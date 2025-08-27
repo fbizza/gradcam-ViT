@@ -1,8 +1,57 @@
 from dash import html, dcc
 import plotly.express as px
-import pandas as pd
+from app import df
 
-df = pd.read_csv("data/dataset.csv")
+def create_scatter_figure(df, num_points=None):
+
+    if num_points:
+        df_plot = df.sample(n=num_points, random_state=29)
+    else:
+        df_plot = df
+
+    fig = px.scatter(
+        df_plot,
+        x="tsne_1",
+        y="tsne_2",
+        color="predicted_label"
+    )
+
+    fig.update_layout(
+        dragmode='pan',
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(
+            visible=False,
+            range=[
+                df["tsne_1"].min() - (df["tsne_1"].max() - df["tsne_1"].min()) * 0.1,
+                df["tsne_1"].max() + (df["tsne_1"].max() - df["tsne_1"].min()) * 0.25
+            ]
+        ),
+        yaxis=dict(
+            visible=False,
+            range=[
+                df["tsne_2"].min() - (df["tsne_2"].max() - df["tsne_2"].min()) * 0.1,
+                df["tsne_2"].max() + (df["tsne_2"].max() - df["tsne_2"].min()) * 0.1
+            ]
+        ),
+        margin=dict(l=0, r=0, t=0, b=0),
+        legend=dict(
+            title=dict(
+                text="Predicted Label",
+                font=dict(size=14, color="#269C8B")
+            ),
+            font=dict(size=12, color="#269C8B"),
+            bgcolor="#2F323B",
+            borderwidth=0,
+            x=0.993,
+            y=1,
+            xanchor="right",
+            yanchor="top"
+        )
+    )
+
+    return fig
+
 
 def create_layout():
     return html.Div([
@@ -101,7 +150,8 @@ def create_layout():
                         dcc.Slider(
                             id='my-slider',
                             min=0,
-                            max=5000,
+                            max=len(df),
+                            value=2000,
                             tooltip={"placement": "bottom", "always_visible": False},
                             updatemode="drag"
                         )
@@ -127,46 +177,7 @@ def create_layout():
                     ),
                     dcc.Graph(
                         id='scatter-plot',
-                        figure=px.scatter(
-                            df,
-                            x="tsne_1",
-                            y="tsne_2",
-                            color="predicted_label",
-                        ).update_layout(
-                            dragmode='pan',
-                            plot_bgcolor="rgba(0,0,0,0)",
-                            paper_bgcolor="rgba(0,0,0,0)",
-                            xaxis=dict(
-                                visible=False,
-                                range=[
-                                    df["tsne_1"].min() - (df["tsne_1"].max() - df["tsne_1"].min()) * 0.1,
-                                    df["tsne_1"].max() + (df["tsne_1"].max() - df["tsne_1"].min()) * 0.25
-                                ]
-                            ),
-                            yaxis=dict(
-                                visible=False,
-                                range=[
-                                    df["tsne_2"].min() - (df["tsne_2"].max() - df["tsne_2"].min()) * 0.1,
-                                    df["tsne_2"].max() + (df["tsne_2"].max() - df["tsne_2"].min()) * 0.1
-                                ]
-                            ),
-                            margin=dict(l=0, r=0, t=0, b=0),
-
-                            legend=dict(
-                                title=dict(
-                                    text="Predicted Label",
-                                    font=dict(size=14, color="#269C8B")
-                                ),
-                                font=dict(size=12, color="#269C8B"),
-                                bgcolor="#2F323B",
-                                borderwidth=0,
-                                x=0.993,
-                                y=1,
-                                xanchor="right",
-                                yanchor="top"
-                            )
-
-                        ),
+                        figure=create_scatter_figure(df),
                         config={
                             "scrollZoom": True,
                             "displayModeBar": False
