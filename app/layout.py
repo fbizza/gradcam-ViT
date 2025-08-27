@@ -9,11 +9,14 @@ def create_scatter_figure(df, num_points=None):
     else:
         df_plot = df
 
+    sorted_labels = sorted(df_plot['predicted_label'].unique())
+
     fig = px.scatter(
         df_plot,
         x="tsne_1",
         y="tsne_2",
-        color="predicted_label"
+        color="predicted_label",
+        category_orders={"predicted_label": sorted_labels}
     )
 
     fig.update_layout(
@@ -112,21 +115,25 @@ def create_layout():
                     #html.H5("Selections", className="card-title"),
 
                     html.Div([
-                        # Dropdown 1
+                        # Dropdown 1 (predictions)
                         html.Div([
-                            html.Label("Dropdown 1", style={"textAlign": "center", "margin-bottom": "0.5em"}),
+                            html.Label("Predictions", style={"textAlign": "center", "margin-bottom": "0.5em", "fontWeight": "bold"}),
                             dcc.Dropdown(
-                                id="dropdown-1",
-                                options=[{"label": f"Opzione {i}", "value": str(i)} for i in range(1, 4)],
-                                value="1",
+                                id="dropdown-predictions",
+                                options=[
+                                    {"label": "All predictions", "value": "all"},
+                                    {"label": "Correct predictions", "value": "correct"},
+                                    {"label": "Wrong predictions", "value": "wrong"}
+                                ],
+                                value="all",  # default
                                 clearable=False,
                                 style={"width": "100%"}
                             )
-                        ], style={"display": "flex", "flexDirection": "column", "flex": "1"}),
+                        ], style={"display": "flex", "flexDirection": "column", "flex": "1", "fontWeight": "bold"}),
 
                         # Dropdown 2
                         html.Div([
-                            html.Label("Dropdown 2", style={"textAlign": "center", "margin-bottom": "0.5em"}),
+                            html.Label("Dropdown 2", style={"textAlign": "center", "margin-bottom": "0.5em", "fontWeight": "bold"}),
                             dcc.Dropdown(
                                 id="dropdown-2",
                                 options=[{"label": c, "value": c} for c in ["A", "B", "C"]],
@@ -134,7 +141,7 @@ def create_layout():
                                 clearable=False,
                                 style={"width": "100%"}
                             )
-                        ], style={"display": "flex", "flexDirection": "column", "flex": "1"})
+                        ], style={"display": "flex", "flexDirection": "column", "flex": "1", "fontWeight": "bold"})
 
                     ], style={
                         "display": "flex",
