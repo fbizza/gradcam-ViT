@@ -1,0 +1,14 @@
+dash
+kagglehub
+numpy
+opencv_python
+pandas
+Pillow
+plotly
+scikit_learn
+skimage
+timm
+torch
+torchvision
+tqdm
+umap_learn
