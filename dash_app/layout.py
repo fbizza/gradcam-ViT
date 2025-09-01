@@ -22,13 +22,25 @@ def create_scatter_figure(df, num_points=None, dim_reduction="tsne"):
         y=y_col,
         color="predicted_label",
         category_orders={"predicted_label": sorted_labels},
+        custom_data=['true_label', 'predicted_label', 'correct_classification'],
         render_mode="webgl"
     )
+
+    fig.update_traces(
+        hovertemplate=
+        "<b>True label</b>: %{customdata[0]}<br>" +
+        "<b>Predicted label</b>: %{customdata[1]}<br>" +
+        "<extra></extra>")
 
     fig.update_layout(
         dragmode='pan',
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
+        hoverlabel=dict(
+            bgcolor="#282B33",
+            font_size=15,
+            font_color="white",
+        ),
         xaxis=dict(
             visible=False,
             range=[
