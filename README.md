@@ -44,4 +44,17 @@ source venv/bin/activate (# On Windows venv\Scripts\activate)
 pip install -r requirements.txt
 python main.py
 ```
+## Misclassification Examples
 
+By using the dashboard, we can clearly see different types of misclassifications:
+
+
+
+**Model mistakes** – Sometimes the model is simply wrong, for example:
+<p align="center">
+  <img width="280" alt="example_1" src="https://github.com/user-attachments/assets/e4bea9e8-710f-440a-a146-39b19a87f847" />
+</p>
+**Dataset issues** – In other cases, the dataset itself can be misleading (e.g., when an image contains multiple objects).
+<p align="center">
+<img width="1120" height="594" alt="example_2" src="https://github.com/user-attachments/assets/31255a72-d098-488b-b6ed-6a415bb9d3d8" />
+</p>
