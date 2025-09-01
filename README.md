@@ -14,7 +14,10 @@ An interactive dashboard to explore a subset of the **ImageNet** dataset and ana
 
 ## Dashboard Demo
 
-![Dashboard Demo](path/to/screenshot.png)
+
+https://github.com/user-attachments/assets/7f67ee14-ba7a-4001-8da0-a0b956f2e09c
+
+
 
 ## Installation
 
