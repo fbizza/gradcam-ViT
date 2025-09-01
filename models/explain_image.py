@@ -1,7 +1,6 @@
 import os
 import timm
 import torch
-from skimage import io
 from models.gradcam import GradCam
 import numpy as np
 import cv2
@@ -33,7 +32,8 @@ def gen_cam(image, mask, alpha=0.5):
 def generate_gradcam_images(input_image_path, output_dir="output"):
     os.makedirs(output_dir, exist_ok=True)
 
-    img = io.imread(input_image_path)
+    img = cv2.imread(input_image_path, cv2.IMREAD_COLOR)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = np.float32(cv2.resize(img, (224, 224))) / 255
     inputs = prepare_input(img)
 
