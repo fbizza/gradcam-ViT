@@ -18,15 +18,27 @@ An interactive dashboard to explore a subset of the **ImageNet** dataset and ana
 
 ## Installation
 
-You can run the dashboard in two ways: using **Docker** or manually setting up a Python environment.
+You can run the dashboard in two ways: using Docker or manually setting up a Python environment.
 
 ### Option 1: Using Docker
 
 Build and run the Docker container:
 
 ```bash
-git clone https://github.com/fbizza/gradcam-ViT.git
+git clone https://github.com/fbizza/gradcam-ViT
 cd gradcam-ViT
 docker build -t gradcam-vit .
 docker run -p 8050:8050 gradcam-vit
+```
+
+### Option 2: Manual Setup
+
+```bash
+git clone https://github.com/fbizza/gradcam-ViT
+cd gradcam-ViT
+python -m venv venv
+source venv/bin/activate (# On Windows venv\Scripts\activate)
+pip install -r requirements.txt
+python main.py
+```
 
