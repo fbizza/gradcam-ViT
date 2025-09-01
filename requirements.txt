@@ -6,7 +6,6 @@ pandas
 Pillow
 plotly
 scikit_learn
-skimage
 timm
 torch
 torchvision
