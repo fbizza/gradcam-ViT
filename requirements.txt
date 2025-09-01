@@ -12,3 +12,4 @@ torchvision
 tqdm
 umap
 umap_learn
+gunicorn
