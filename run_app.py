@@ -1,4 +1,5 @@
-from app import app
+from dash_app import app
 
 if __name__ == "__main__":
-    app.server.run(debug=False, host='0.0.0.0', port=8050)
+    server = app.server
+    server.run(debug=False, host='0.0.0.0', port=8050)

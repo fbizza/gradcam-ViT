@@ -3,10 +3,10 @@ import json
 from dash import Input, Output, State, html, dcc
 import plotly.graph_objects as go
 import base64
-from app import app, df
+from dash_app import app, df
 
 
-from app.layout import create_scatter_figure
+from dash_app.layout import create_scatter_figure
 from models import generate_gradcam_images
 
 
@@ -109,9 +109,9 @@ def toggle_sidebar(clickData, close_clicks, dim_reduction, sidebar_style, main_s
         img_path = f"data/images/{img_name_fixed}"
 
         # Generate Grad-CAM images
-        generate_gradcam_images(img_path, "app/tmp")
-        gradcam_image = 'app/tmp/gradcam.jpg'
-        original_image = 'app/tmp/original_image.jpg'
+        generate_gradcam_images(img_path, "dash_app/tmp")
+        gradcam_image = 'dash_app/tmp/gradcam.jpg'
+        original_image = 'dash_app/tmp/original_image.jpg'
 
         encoded_gradcam_image = base64.b64encode(open(gradcam_image, 'rb').read())
         encoded_original_image = base64.b64encode(open(original_image, 'rb').read())

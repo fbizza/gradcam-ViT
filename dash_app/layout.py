@@ -1,6 +1,6 @@
 from dash import html, dcc
 import plotly.express as px
-from app import df
+from dash_app import df
 
 def create_scatter_figure(df, num_points=None, dim_reduction="tsne"):
 
