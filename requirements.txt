@@ -13,3 +13,4 @@ torchvision==0.23.0+cu126
 tqdm==4.67.1
 umap==0.1.1
 umap_learn==0.5.9.post2
+setuptools
