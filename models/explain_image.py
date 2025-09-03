@@ -1,9 +1,10 @@
 import os
 import timm
 import torch
-from models.gradcam import GradCam
 import numpy as np
-import cv2
+from PIL import Image
+from matplotlib import cm
+from models.gradcam import GradCam
 
 
 def prepare_input(image):
@@ -18,39 +19,35 @@ def prepare_input(image):
 
 
 def gen_cam(image, mask, alpha=0.5):
-
-    heatmap = cv2.applyColorMap(np.uint8(255 * mask), cv2.COLORMAP_JET)
-    heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
-    heatmap = np.float32(heatmap) / 255
+    colormap = cm.get_cmap('jet')
+    heatmap = colormap(mask)[:, :, :3]  # ignore alpha channel
 
     cam = alpha * heatmap + (1 - alpha) * image
     cam = cam / np.max(cam)
-    return np.uint8(255 * cam)
-
+    cam = np.uint8(255 * cam)
+    return cam
 
 
 def generate_gradcam_images(input_image_path, output_dir="output"):
     os.makedirs(output_dir, exist_ok=True)
 
-    img = cv2.imread(input_image_path, cv2.IMREAD_COLOR)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = np.float32(cv2.resize(img, (224, 224))) / 255
-    inputs = prepare_input(img)
+    img = Image.open(input_image_path).convert('RGB')
+    img = img.resize((224, 224))
+    img_np = np.float32(np.array(img)) / 255
+    inputs = prepare_input(img_np)
 
     model = timm.create_model('deit_tiny_patch16_224', pretrained=True)
     target_layer = model.blocks[-1].norm1
     grad_cam = GradCam(model, target_layer)
 
     mask = grad_cam(inputs)
-    gradcam_img = gen_cam(img, mask)
-
+    gradcam_img = gen_cam(img_np, mask)
 
     gradcam_path = os.path.join(output_dir, 'gradcam.jpg')
-    cv2.imwrite(gradcam_path, cv2.cvtColor(gradcam_img, cv2.COLOR_RGB2BGR))
+    Image.fromarray(gradcam_img).save(gradcam_path)
 
     original_path = os.path.join(output_dir, 'original_image.jpg')
-    cv2.imwrite(original_path, cv2.cvtColor(np.uint8(img*255), cv2.COLOR_RGB2BGR))
-
+    Image.fromarray(np.uint8(img_np * 255)).save(original_path)
 
 
 if __name__ == "__main__":
